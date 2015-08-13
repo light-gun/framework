@@ -20,6 +20,11 @@ class Server
         $this->lumenApplication = $lumenApplication;
     }
 
+    /**
+     * @param $port
+     *
+     * @throws \React\Socket\ConnectionException
+     */
     public function listen($port)
     {
         /**
