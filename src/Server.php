@@ -36,6 +36,8 @@ class Server
             /** @var \Illuminate\Http\Response $lumenResponse */
             $lumenResponse = $this->lumenApplication->dispatch($symfonyFormattedRequest);
 
+            $lumenResponse->prepare($symfonyFormattedRequest);
+
             // Build a React response from the symfony response
             $response->writeHead($lumenResponse->getStatusCode(), $lumenResponse->headers->all());
             $response->end($lumenResponse->content());
