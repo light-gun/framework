@@ -2,6 +2,7 @@
     "name": "light-gun/framework",
     "description": "The Light Gun Framework.",
     "keywords": ["framework", "lightgun", "react", "lumen"],
+    "license": "MIT",
     "require": {
         "laravel/lumen-framework": "5.1.*",
         "react/http": "dev-master@dev",
