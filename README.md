@@ -1,9 +1,14 @@
 # Light Gun Framework (alpha)
 
-Light Gun is a framework based on React and Lumen. It allows you to easily create a event loop server.
+**THIS IS THE CORE FRAMEWORK**
 
-For setting up a new project, clone the project repository [`light-gun/project`](https://github.com/light-gun/project).
+> **Note:** This repository contains the core code of the Light Gun framework. For setting up a new project, see the project template repository [`light-gun/project`](https://github.com/light-gun/project).
 
-```
-composer create-project light-gun/project
-```
+### Project Vision
+
+Provide a lightweight toolset for building event-driven web services. 
+
+
+### TODOS
+
+* [ ] Add options for debugging output (request logging, error logging, memory usage, etc)
