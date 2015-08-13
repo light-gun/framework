@@ -93,6 +93,7 @@ class Server
         // Convert the React Request to a Symfony Request
         $symReq = new \Symfony\Component\HttpFoundation\Request();
         $symReq->setMethod($request->getMethod());
+        $symReq->server->set('REQUEST_URI', $request->getPath());
         $symReq->query->add($request->getQuery());
         $symReq->request->add($request->getPost());
         $symReq->headers->add($request->getHeaders());
