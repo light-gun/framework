@@ -1,4 +1,4 @@
-# Light Gun Framework
+# Light Gun Framework (alpha)
 
 Light Gun is a framework based on React and Lumen. It allows you to easily create a event loop server.
 
