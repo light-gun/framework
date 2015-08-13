@@ -17,7 +17,7 @@ class Server
      *
      * @throws \React\Socket\ConnectionException
      */
-    public function __construct($lumenApplication)
+    public function __construct(Application $lumenApplication)
     {
         $this->lumenApplication = $lumenApplication;
     }
