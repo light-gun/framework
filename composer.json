@@ -4,7 +4,7 @@
     "keywords": ["framework", "lightgun", "react", "lumen"],
     "require": {
         "laravel/lumen-framework": "5.1.*",
-        "react/http": "dev-master",
+        "react/http": "dev-master@dev",
         "react/promise": "^2.2"
     },
     "require-dev": {
