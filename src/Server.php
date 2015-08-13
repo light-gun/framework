@@ -11,6 +11,11 @@ class Server
     private $lumenApplication;
 
     /**
+     * @var bool
+     */
+    private $debugging = false;
+
+    /**
      * @param LumenApplicationWrapper $lumenApplication
      *
      * @throws \React\Socket\ConnectionException
@@ -19,7 +24,15 @@ class Server
     {
         $this->lumenApplication = $lumenApplication;
     }
-    
+
+    /**
+     *
+     */
+    public function enableDebugging()
+    {
+        $this->debugging = true;
+    }
+
     /**
      * @param $port
      *
@@ -45,6 +58,10 @@ class Server
             $response->writeHead($lumenResponse->getStatusCode(), $lumenResponse->headers->all());
             $response->end($lumenResponse->content());
 
+            if ($this->debugging) {
+                $this->logRequest($request, $lumenResponse);
+            }
+
             $response->on('close', function() use ($lumenResponse) {
                 $this->lumenApplication->runTerminableMiddleware($lumenResponse);
             });
@@ -57,8 +74,9 @@ class Server
 
         $http->on('request', $requestHandler);
 
-        // TODO: depending on "debug level", output running notice
-        echo "Server running at http://127.0.0.1:1337\n";
+        if ($this->debugging) {
+            echo "Server running at http://127.0.0.1:1337".PHP_EOL.PHP_EOL;
+        }
 
         $socket->listen($port);
         $loop->run();
@@ -80,6 +98,15 @@ class Server
         $symReq->headers->add($request->getHeaders());
 
         return $symReq;
+    }
+
+    /**
+     * @param \React\Http\Request $request
+     * @param \Illuminate\Http\Response $lumenResponse
+     */
+    private function logRequest($request, $lumenResponse)
+    {
+        echo "Request: ".$request->getMethod().' '.$request->getPath().' -> '.$lumenResponse->getStatusCode().PHP_EOL;
     }
 
 }
