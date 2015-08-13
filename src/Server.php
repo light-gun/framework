@@ -6,7 +6,7 @@ class Server
 {
 
     /**
-     * @var Application
+     * @var LumenApplicationWrapper
      */
     private $lumenApplication;
 
