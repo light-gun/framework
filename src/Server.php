@@ -19,7 +19,7 @@ class Server
     {
         $this->lumenApplication = $lumenApplication;
     }
-
+    
     /**
      * @param $port
      *
@@ -45,8 +45,9 @@ class Server
             $response->writeHead($lumenResponse->getStatusCode(), $lumenResponse->headers->all());
             $response->end($lumenResponse->content());
 
-            // TODO: Find a way to run this asynchronously
-            $this->lumenApplication->runTerminableMiddleware($lumenResponse);
+            $response->on('close', function() use ($lumenResponse) {
+                $this->lumenApplication->runTerminableMiddleware($lumenResponse);
+            });
 
         };
 
