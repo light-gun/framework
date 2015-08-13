@@ -2,8 +2,6 @@
 
 namespace LightGun;
 
-use Laravel\Lumen\Application;
-
 class Server
 {
 
@@ -13,11 +11,11 @@ class Server
     private $lumenApplication;
 
     /**
-     * @param Application $lumenApplication
+     * @param LumenApplicationWrapper $lumenApplication
      *
      * @throws \React\Socket\ConnectionException
      */
-    public function __construct(Application $lumenApplication)
+    public function __construct(LumenApplicationWrapper $lumenApplication)
     {
         $this->lumenApplication = $lumenApplication;
     }
@@ -41,6 +39,9 @@ class Server
             // Build a React response from the symfony response
             $response->writeHead($lumenResponse->getStatusCode(), $lumenResponse->headers->all());
             $response->end($lumenResponse->content());
+
+            // TODO: Find a way to run this asynchronously
+            $this->lumenApplication->runTerminableMiddleware($lumenResponse);
 
         };
 
