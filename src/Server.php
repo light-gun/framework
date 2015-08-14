@@ -16,6 +16,11 @@ class Server
     private $debugging = false;
 
     /**
+     * @var int
+     */
+    private $port = 1337;
+
+    /**
      * @param LumenApplicationWrapper $lumenApplication
      *
      * @throws \React\Socket\ConnectionException
@@ -34,17 +39,32 @@ class Server
     }
 
     /**
+     * @param int $port
+     */
+    public function setPort($port)
+    {
+        $this->port = $port;
+    }
+
+    /**
      * @param $port
      *
      * @throws \React\Socket\ConnectionException
      */
-    public function listen($port)
+    public function listen($port=false)
     {
+        if ($port) {
+            $this->port = $port;
+        }
+
         /**
          * @param \React\Http\Request $request
          * @param \React\Http\Response $response
          */
         $requestHandler = function ($request, $response) {
+
+            // If debugging is on, track the request start time
+            $requestStartTime = ($this->debugging) ? microtime(true) : null;
 
             $symfonyFormattedRequest = $this->convertRequest($request);
 
@@ -59,12 +79,13 @@ class Server
             $response->end($lumenResponse->content());
 
             if ($this->debugging) {
-                $this->logRequest($request, $lumenResponse);
+                echo $this->getLogEntry($request, $lumenResponse, $requestStartTime);
             }
 
             $response->on('close', function() use ($lumenResponse) {
                 $this->lumenApplication->runTerminableMiddleware($lumenResponse);
             });
+
 
         };
 
@@ -75,10 +96,10 @@ class Server
         $http->on('request', $requestHandler);
 
         if ($this->debugging) {
-            echo "Server running at http://127.0.0.1:1337".PHP_EOL.PHP_EOL;
+            echo "Server running on port ".$this->port.PHP_EOL.PHP_EOL;
         }
 
-        $socket->listen($port);
+        $socket->listen($this->port);
         $loop->run();
 
     }
@@ -113,12 +134,24 @@ class Server
     }
 
     /**
-     * @param \React\Http\Request $request
+     * @param \React\Http\Request       $request
      * @param \Illuminate\Http\Response $lumenResponse
+     *
+     * @param                           $requestStartTime
+     *
+     * @return string
      */
-    private function logRequest($request, $lumenResponse)
+    private function getLogEntry($request, $lumenResponse, $requestStartTime)
     {
-        echo "Request: ".$request->getMethod().' '.$request->getPath().' -> '.$lumenResponse->getStatusCode().PHP_EOL;
+        $out = ' '.$lumenResponse->getStatusCode().'  | ';
+
+        $totalTime = number_format(((microtime(true) - $requestStartTime)*1000),1).' ms';
+
+        $out .= str_pad($totalTime, 12, ' ', STR_PAD_LEFT);
+
+        $out .= '  |  '.$request->getMethod().'  |  '.$request->getPath().PHP_EOL;
+
+        return $out;
     }
 
 }

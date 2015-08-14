@@ -6,7 +6,8 @@
     "require": {
         "laravel/lumen-framework": "5.1.*",
         "react/http": "dev-master@dev",
-        "react/promise": "^2.2"
+        "react/promise": "^2.2",
+        "league/climate": "^3.2"
     },
     "require-dev": {
         "phpunit/phpunit": "~4.0",
