@@ -2,7 +2,7 @@
 
 **THIS IS THE CORE FRAMEWORK**
 
-> **Note:** This repository contains the core code of the Light Gun framework. For setting up a new project, see the project template repository [`light-gun`](https://github.com/light-gun/light-gun).
+> **Note:** This repository contains the core code of the Light Gun framework. For setting up a new project, see the project template repository [`light-gun/light-gun`](https://github.com/light-gun/light-gun).
 
 ### Project Vision
 
